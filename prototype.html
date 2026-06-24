@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数字监管统一界面闭环 - 展示原型</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      color: #17324d;
+      background: #eef7ff;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(180deg, rgba(218, 239, 255, 0.9) 0%, rgba(246, 251, 255, 0.98) 42%),
+        #f7fbff;
+    }
+
+    .topbar {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 44px;
+      background: linear-gradient(90deg, #dff2ff 0%, #f8fcff 58%, #eaf7ff 100%);
+      border-bottom: 1px solid #c9e3f6;
+      box-shadow: 0 8px 22px rgba(65, 139, 197, 0.1);
+    }
+
+    .brand {
+      min-width: 260px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: #0e568f;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 100%;
+    }
+
+    .nav-item {
+      position: relative;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #3b6f97;
+      white-space: nowrap;
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+      background: linear-gradient(180deg, #4fb0f0 0%, #2188d8 100%);
+      box-shadow: 0 8px 18px rgba(33, 136, 216, 0.24);
+    }
+
+    .nav-item.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -17px;
+      width: 42px;
+      height: 3px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: #2188d8;
+    }
+
+    .layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 236px minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    .sidebar {
+      padding: 24px 16px;
+      background: rgba(255, 255, 255, 0.72);
+      border-right: 1px solid #d4e9f8;
+    }
+
+    .side-title {
+      margin: 0 0 14px;
+      padding: 0 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #5a86a8;
+    }
+
+    .side-menu {
+      display: grid;
+      gap: 10px;
+    }
+
+    .side-item {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0 16px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #416f91;
+      background: #ffffff;
+      border: 1px solid #d8ecfa;
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .side-item.active {
+      color: #0d67a8;
+      background: #e7f5ff;
+      border-color: #8ccbf3;
+      box-shadow: inset 4px 0 0 #2c99e5;
+    }
+
+    .side-item:focus-visible {
+      outline: 2px solid rgba(44, 153, 229, 0.32);
+      outline-offset: 2px;
+    }
+
+    .content {
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .workspace {
+      min-height: calc(100vh - 120px);
+      overflow: hidden;
+      border: 1px solid #d8ebf8;
+      border-radius: 8px;
+      background: #f3f6f9;
+      box-shadow: 0 14px 32px rgba(70, 135, 184, 0.08);
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .module-tabs {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 0 18px;
+      color: #2b4357;
+      font-size: 14px;
+      background: #f5f7f9;
+      border-bottom: 1px solid #e4e8ee;
+    }
+
+    .module-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .module-tab.active {
+      color: #2489ff;
+    }
+
+    .close {
+      color: currentColor;
+      opacity: 0.8;
+    }
+
+    .event-board {
+      height: calc(100vh - 158px);
+      min-height: 640px;
+      display: grid;
+      grid-template-columns: minmax(390px, 450px) minmax(390px, 440px) minmax(520px, 1fr);
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .panel {
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(20, 57, 94, 0.1);
+    }
+
+    .panel-header {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid #e3e8ef;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .blue-icon {
+      width: 14px;
+      height: 14px;
+      position: relative;
+      transform: rotate(45deg);
+    }
+
+    .blue-icon::before,
+    .blue-icon::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 2px;
+      background: #168bff;
+    }
+
+    .blue-icon::after {
+      transform: translate(4px, 4px);
+      opacity: 0.55;
+    }
+
+    .back-btn {
+      height: 28px;
+      padding: 0 13px;
+      border: 1px solid #d5dce6;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #1f2937;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .panel-body {
+      height: calc(100% - 48px);
+      overflow: auto;
+      padding: 20px 12px 12px;
+    }
+
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .detail-table th,
+    .detail-table td {
+      height: 40px;
+      padding: 8px 10px;
+      border: 1px solid #e3e8ef;
+      vertical-align: middle;
+    }
+
+    .detail-table th {
+      width: 120px;
+      text-align: right;
+      color: #334155;
+      background: #f3f6fa;
+      font-weight: 700;
+    }
+
+    .deadline {
+      color: #ff0000;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .evidence-photo {
+      height: 340px;
+      margin: 0 10px 0;
+      border: 1px solid #dfe6ee;
+      background-image: url("assets/reference-screen.png");
+      background-size: 1619px 900px;
+      background-position: -28px -508px;
+      background-repeat: no-repeat;
+    }
+
+    .share-tabs {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 12px;
+      border-bottom: 1px solid #dfe5ed;
+      color: #111827;
+      font-size: 13px;
+    }
+
+    .share-tab {
+      min-width: 72px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      border: 1px solid #d7e0ea;
+      border-radius: 4px;
+      background: #ffffff;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .share-tab.active {
+      color: #ffffff;
+      border-color: #168bff;
+      background: #168bff;
+      box-shadow: 0 5px 12px rgba(22, 139, 255, 0.18);
+    }
+
+    .share-tab:focus-visible {
+      outline: 2px solid rgba(22, 139, 255, 0.35);
+      outline-offset: 2px;
+    }
+
+    .share-list {
+      height: calc(100% - 92px);
+      overflow: auto;
+      padding: 10px 12px 0;
+      font-size: 12px;
+      line-height: 1.65;
+      color: #344154;
+    }
+
+    .share-record {
+      padding: 4px 0 7px;
+      border-bottom: 1px solid #d7dde6;
+    }
+
+    .share-record strong {
+      margin-right: 12px;
+      color: #111827;
+      font-weight: 400;
+    }
+
+    .pagination {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 12px;
+      font-size: 12px;
+      color: #111827;
+      background: #ffffff;
+    }
+
+    .pagination .active-page {
+      color: #168bff;
+    }
+
+    .map-panel {
+      position: relative;
+      border-radius: 8px;
+      background: #edf3f6;
+      box-shadow: 0 8px 20px rgba(20, 57, 94, 0.08);
+      overflow: hidden;
+      background-image: url("assets/reference-screen.png");
+      background-size: 1619px 900px;
+      background-position: right top;
+      background-repeat: no-repeat;
+    }
+
+    .map-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 1px rgba(209, 220, 231, 0.75);
+    }
+
+    .warning-list-board {
+      height: calc(100vh - 158px);
+      min-height: 640px;
+      padding: 16px;
+    }
+
+    .list-panel {
+      height: 100%;
+    }
+
+    .query-bar {
+      display: grid;
+      grid-template-columns: 220px 170px 170px 280px auto minmax(0, 1fr);
+      gap: 20px 32px;
+      align-items: center;
+      padding: 22px 18px;
+      border-bottom: 1px solid #eef2f6;
+    }
+
+    .query-input,
+    .query-select,
+    .date-range {
+      height: 32px;
+      border: 1px solid #c7cfd9;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #1f2937;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .query-input {
+      padding: 0 10px;
+    }
+
+    .query-select {
+      padding: 0 10px;
+    }
+
+    .date-range {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+      padding: 0 10px;
+      color: #8a95a4;
+    }
+
+    .date-range span:nth-child(2) {
+      color: #111827;
+      font-weight: 700;
+    }
+
+    .query-btn {
+      width: 60px;
+      height: 32px;
+      border: 0;
+      border-radius: 4px;
+      background: #4095ee;
+      color: #ffffff;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .warning-table-wrap {
+      height: calc(100% - 124px);
+      overflow: auto;
+      padding: 0 18px 18px;
+    }
+
+    .warning-table {
+      width: 100%;
+      min-width: 1220px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      color: #0c2749;
+      font-size: 14px;
+    }
+
+    .warning-table th,
+    .warning-table td {
+      height: 58px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #f1f4f7;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .warning-table th {
+      height: 40px;
+      background: #f6f7f9;
+      color: #12243d;
+      font-weight: 700;
+    }
+
+    .warning-table th:nth-child(1),
+    .warning-table td:nth-child(1) {
+      width: 70px;
+    }
+
+    .warning-table th:nth-child(2),
+    .warning-table td:nth-child(2) {
+      width: 220px;
+    }
+
+    .warning-table th:nth-child(3),
+    .warning-table td:nth-child(3) {
+      width: 110px;
+    }
+
+    .warning-table th:nth-child(4),
+    .warning-table td:nth-child(4) {
+      width: 110px;
+    }
+
+    .warning-table th:nth-child(5),
+    .warning-table td:nth-child(5) {
+      width: 100px;
+    }
+
+    .warning-table th:nth-child(6),
+    .warning-table td:nth-child(6) {
+      width: 120px;
+    }
+
+    .warning-table th:nth-child(7),
+    .warning-table td:nth-child(7) {
+      width: 90px;
+    }
+
+    .warning-table th:nth-child(8),
+    .warning-table td:nth-child(8),
+    .warning-table th:nth-child(9),
+    .warning-table td:nth-child(9) {
+      width: 180px;
+    }
+
+    .warning-table th:nth-child(10),
+    .warning-table td:nth-child(10) {
+      width: 280px;
+    }
+
+    .link-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: #168bff;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .config-board {
+      height: calc(100vh - 158px);
+      min-height: 640px;
+      display: grid;
+      grid-template-columns: minmax(560px, 1fr) minmax(420px, 520px);
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .config-toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 0.8fr 1fr auto;
+      gap: 14px;
+      padding: 16px 14px 12px;
+      border-bottom: 1px solid #e3e8ef;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 7px;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .form-field select,
+    .config-input,
+    .config-order {
+      height: 32px;
+      border: 1px solid #d7e0ea;
+      border-radius: 4px;
+      padding: 0 10px;
+      background: #ffffff;
+      color: #1f2937;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .config-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 13px;
+    }
+
+    .config-panel {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .config-panel .panel-body {
+      flex: 1;
+      height: auto;
+      padding: 0 12px 12px;
+    }
+
+    .config-table th,
+    .config-table td {
+      height: 42px;
+      padding: 8px;
+      border-bottom: 1px solid #e8edf3;
+      text-align: left;
+      color: #334155;
+    }
+
+    .config-table th {
+      color: #64748b;
+      background: #f7faff;
+      font-weight: 700;
+    }
+
+    .config-table th:nth-child(1),
+    .config-table td:nth-child(1) {
+      width: 64px;
+      text-align: center;
+    }
+
+    .config-table th:nth-child(2),
+    .config-table td:nth-child(2) {
+      width: 150px;
+    }
+
+    .config-table th:nth-child(4),
+    .config-table td:nth-child(4) {
+      width: 110px;
+    }
+
+    .config-table th:nth-child(5),
+    .config-table td:nth-child(5) {
+      width: 82px;
+    }
+
+    .config-input {
+      width: 100%;
+    }
+
+    .config-order {
+      width: 58px;
+      padding: 0 6px;
+      text-align: center;
+    }
+
+    .config-actions {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+      min-width: 132px;
+      grid-column: -2 / -1;
+    }
+
+    .save-btn {
+      height: 32px;
+      padding: 0 18px;
+      border: 1px solid #168bff;
+      border-radius: 4px;
+      background: #168bff;
+      color: #ffffff;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(22, 139, 255, 0.2);
+    }
+
+    .save-status {
+      color: #168bff;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .add-event-field[hidden] {
+      display: none;
+    }
+
+    .add-event-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .ghost-btn {
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid #b7d7ee;
+      border-radius: 4px;
+      background: #f4fbff;
+      color: #0d67a8;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .api-field[hidden],
+    .table-field[hidden] {
+      display: none;
+    }
+
+    .config-preview {
+      padding: 14px;
+      overflow: auto;
+    }
+
+    .empty-tip {
+      margin: 0;
+      padding: 24px;
+      color: #64748b;
+      text-align: center;
+      border: 1px dashed #bfd7eb;
+      border-radius: 6px;
+      background: #f7fbff;
+    }
+
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #e7f5ff;
+      color: #0d67a8;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .preview-image-cell {
+      padding: 10px;
+    }
+
+    .preview-image {
+      width: 100%;
+      height: 180px;
+      border: 1px solid #dfe6ee;
+      border-radius: 6px;
+      background-image: url("assets/reference-screen.png");
+      background-size: 980px 545px;
+      background-position: -18px -306px;
+      background-repeat: no-repeat;
+    }
+
+    .map-link {
+      color: #168bff;
+      font-weight: 700;
+    }
+
+    @media (max-width: 860px) {
+      .topbar {
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .nav {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .nav-item.active::after {
+        display: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid #d4e9f8;
+      }
+
+      .side-menu {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .workspace {
+        min-height: 420px;
+      }
+
+      .event-board {
+        height: auto;
+        min-height: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .warning-list-board {
+        height: auto;
+        min-height: 0;
+      }
+
+      .query-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .config-board {
+        height: auto;
+        min-height: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .config-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .config-actions {
+        grid-column: auto;
+      }
+
+      .panel,
+      .map-panel {
+        min-height: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">鄂州市数字监管系统</div>
+      <nav class="nav" aria-label="一级目录">
+        <div class="nav-item">全景图</div>
+        <div class="nav-item">大屏</div>
+        <div class="nav-item active">应用场景</div>
+        <div class="nav-item">指挥调度</div>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="二级目录">
+        <p class="side-title">应用场景</p>
+        <div class="side-menu">
+          <button class="side-item active" type="button" data-screen-target="eventList">预警事件</button>
+          <button class="side-item" type="button" data-screen-target="publicOpinion">民生舆情</button>
+          <button class="side-item" type="button" data-screen-target="config">事件配置</button>
+        </div>
+      </aside>
+
+      <section class="content" aria-label="主要内容">
+        <div class="workspace">
+          <div class="module-tabs">
+            <span class="module-tab">首页</span>
+            <span class="module-tab">新增事件 <span class="close">×</span></span>
+            <span class="module-tab active">城管受理协同 <span class="close">×</span></span>
+          </div>
+
+          <div class="screen active" data-screen="eventList">
+            <div class="warning-list-board">
+              <section class="panel list-panel">
+                <div class="panel-header">
+                  <div class="panel-title"><span class="blue-icon"></span>预警事件</div>
+                </div>
+                <div class="query-bar">
+                  <input class="query-input" id="warningKeyword" type="text" placeholder="关键词">
+                  <select class="query-select" id="warningStatus">
+                    <option value="">案件状态</option>
+                    <option value="未办结">未办结</option>
+                    <option value="已办结">已办结</option>
+                  </select>
+                  <select class="query-select" id="warningTypeFilter">
+                    <option value="">预警类型</option>
+                    <option value="城管事件">城管事件</option>
+                    <option value="消防事件">消防事件</option>
+                  </select>
+                  <div class="date-range" aria-label="时间范围">
+                    <span>开始时间</span>
+                    <span>至</span>
+                    <span>结束时间</span>
+                  </div>
+                  <button class="query-btn" type="button" id="warningSearchBtn">查询</button>
+                </div>
+                <div class="warning-table-wrap">
+                  <table class="warning-table">
+                    <thead>
+                      <tr>
+                        <th>序号</th>
+                        <th>案件类型</th>
+                        <th>预警类型</th>
+                        <th>案件状态</th>
+                        <th>问题来源</th>
+                        <th>任务号</th>
+                        <th>监控数量</th>
+                        <th>案件时间</th>
+                        <th>处置截止时间</th>
+                        <th>区域</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody id="warningListBody"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="screen" data-screen="eventDetail">
+          <div class="event-board">
+            <section class="panel">
+              <div class="panel-header">
+                <div class="panel-title"><span class="blue-icon"></span><span id="eventDetailTitle">事件详情</span></div>
+                <button class="back-btn" type="button" id="backToListBtn">返回</button>
+              </div>
+              <div class="panel-body">
+                <table class="detail-table">
+                  <tbody id="eventDetailBody"></tbody>
+                </table>
+                <div class="evidence-photo" aria-label="现场照片"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div class="panel-title"><span class="blue-icon"></span>数据共享清单</div>
+              </div>
+              <div class="panel-body">
+                <div class="share-tabs" role="tablist" aria-label="数据共享清单分类">
+                  <button class="share-tab active" type="button" data-share-tab="units" role="tab" aria-selected="true">实有单位</button>
+                  <button class="share-tab" type="button" data-share-tab="police" role="tab" aria-selected="false">民警</button>
+                  <button class="share-tab" type="button" data-share-tab="camera" role="tab" aria-selected="false">视频监控</button>
+                  <button class="share-tab" type="button" data-share-tab="grid" role="tab" aria-selected="false">网格员</button>
+                  <button class="share-tab" type="button" data-share-tab="school" role="tab" aria-selected="false">学校</button>
+                  <button class="share-tab" type="button" data-share-tab="hospital" role="tab" aria-selected="false">医院</button>
+                  <button class="share-tab" type="button" data-share-tab="place" role="tab" aria-selected="false">其他重点场所</button>
+                </div>
+                <div class="share-list" id="shareList">
+                  <div class="share-record">
+                    <div><strong>单位（机构）名称</strong> 个体工商户丁*</div>
+                    <div><strong>统一社会信用代码</strong> 92420704MA4AA5AK91</div>
+                    <div><strong>标准地址名称</strong> 湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路11号1栋2屋201室</div>
+                  </div>
+                  <div class="share-record">
+                    <div><strong>单位（机构）名称</strong> 个体工商户严*</div>
+                    <div><strong>统一社会信用代码</strong> 92420704MA4B695622</div>
+                    <div><strong>标准地址名称</strong> 湖北省鄂州市鄂城区杜山镇旭东村府园路6-19号</div>
+                  </div>
+                  <div class="share-record">
+                    <div><strong>单位（机构）名称</strong> 个体工商户严*</div>
+                    <div><strong>统一社会信用代码</strong> 92420704MA4A8G0D7U</div>
+                    <div><strong>标准地址名称</strong> 湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路13号1栋2单元5层502室</div>
+                  </div>
+                  <div class="share-record">
+                    <div><strong>单位（机构）名称</strong> 个体工商户严*</div>
+                    <div><strong>统一社会信用代码</strong> 92420704MA7H01YF7J</div>
+                    <div><strong>标准地址名称</strong> 湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路14号1栋</div>
+                  </div>
+                  <div class="share-record">
+                    <div><strong>单位（机构）名称</strong> 个体工商户严*</div>
+                    <div><strong>统一社会信用代码</strong> 92420704MA4B4F250M</div>
+                    <div><strong>标准地址名称</strong> 湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路12号1栋2单元2层201室</div>
+                  </div>
+                  <div class="share-record">
+                    <div><strong>单位（机构）名称</strong> 个体工商户余*</div>
+                    <div><strong>统一社会信用代码</strong> 92420704MA4B4DW80X</div>
+                    <div><strong>标准地址名称</strong> 湖北省鄂州市鄂城区杜山镇杜山镇农科所旭光大道154-2号</div>
+                  </div>
+                </div>
+                <div class="pagination" id="sharePagination">
+                  <span class="active-page">1</span><span>2</span><span>3</span><span>4</span><span>···</span><span>43</span><span>共 343 条</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="map-panel" aria-label="地图"></section>
+          </div>
+          </div>
+
+          <div class="screen" data-screen="publicOpinion">
+            <div class="config-board">
+              <section class="panel">
+                <div class="panel-header">
+                  <div class="panel-title"><span class="blue-icon"></span>民生舆情</div>
+                </div>
+                <div class="panel-body">
+                  <p class="empty-tip">民生舆情模块预留</p>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="screen" data-screen="config">
+            <div class="config-board">
+              <section class="panel config-panel">
+                <div class="panel-header">
+                  <div class="panel-title"><span class="blue-icon"></span>事件详情配置</div>
+                </div>
+                <div class="config-toolbar">
+                  <label class="form-field">
+                    预警类型
+                    <select id="eventNameSelect">
+                      <option value="">请选择预警类型</option>
+                      <option value="消防事件">消防事件</option>
+                      <option value="城管事件">城管事件</option>
+                      <option value="__add__">新增预警类型</option>
+                    </select>
+                  </label>
+                  <div class="form-field add-event-field" id="addEventField" hidden>
+                    新增预警类型
+                    <div class="add-event-row">
+                      <input id="newEventNameInput" class="config-input" type="text" placeholder="请输入新增预警类型">
+                      <button class="ghost-btn" type="button" id="addEventBtn">添加</button>
+                    </div>
+                  </div>
+                  <label class="form-field">
+                    数据来源
+                    <select id="dataSourceSelect">
+                      <option value="table">库表</option>
+                      <option value="api">接口</option>
+                    </select>
+                  </label>
+                  <label class="form-field table-field" id="tableField">
+                    库表
+                    <select id="tableSelect">
+                      <option value="eventMain">预警事件主表</option>
+                      <option value="eventProcess">案件处置表</option>
+                      <option value="gridArea">网格区域表</option>
+                    </select>
+                  </label>
+                  <label class="form-field api-field" hidden>
+                    接口地址
+                    <input id="apiUrlInput" class="config-input" type="text" value="/api/warning/detail" placeholder="请输入接口地址">
+                  </label>
+                  <label class="form-field api-field" hidden>
+                    请求方式
+                    <select id="apiMethodSelect">
+                      <option value="GET">GET</option>
+                      <option value="POST">POST</option>
+                    </select>
+                  </label>
+                  <label class="form-field api-field" hidden>
+                    入参
+                    <input id="apiParamsInput" class="config-input" type="text" value='{"taskNo":"2026062400221"}' placeholder='例如 {"taskNo":"2026062400221"}'>
+                  </label>
+                  <div class="config-actions">
+                    <button class="save-btn" type="button" id="saveConfigBtn">保存</button>
+                    <span class="save-status" id="saveStatus"></span>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <table class="config-table">
+                    <thead>
+                      <tr>
+                        <th>展示</th>
+                        <th id="fieldSourceTitle">字段</th>
+                        <th>显示名称</th>
+                        <th>展示方式</th>
+                        <th>顺序</th>
+                      </tr>
+                    </thead>
+                    <tbody id="fieldConfigBody"></tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <div class="panel-title"><span class="blue-icon"></span><span id="configPreviewTitle">事件详情预览</span></div>
+                </div>
+                <div class="config-preview">
+                  <table class="detail-table">
+                    <tbody id="configPreviewBody"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const tableFields = {
+      eventMain: {
+        name: "预警事件主表",
+        fields: [
+          { key: "taskNo", field: "task_no", label: "任务号", value: "2026062400221", visible: true, order: 1 },
+          { key: "source", field: "source_type", label: "问题来源", value: "巡查上报", visible: true, order: 2 },
+          { key: "caseType", field: "case_type", label: "案件类型", value: "事件-街面秩序-非机动车乱停放", visible: true, order: 3 },
+          { key: "area", field: "area_name", label: "区域", value: "鄂城区-杜山镇-杜山镇农科所-第二网格", visible: true, order: 4 },
+          { key: "stage", field: "current_stage", label: "当前阶段", value: "[存档]", visible: true, order: 5 },
+          { key: "overdue", field: "is_overdue", label: "是否超期", value: "-", visible: true, order: 6 },
+          { key: "location", field: "address", label: "位置", value: "宇轩农技推广服务部", visible: true, order: 7 },
+          { key: "description", field: "case_desc", label: "案件描述", value: "非机动车乱停", visible: true, order: 8 },
+          { key: "condition", field: "filing_condition", label: "立案条件", value: "2026062400221", visible: true, order: 9 },
+          { key: "deadline", field: "deadline_time", label: "处置截止时间", value: "2026-06-24 11:31:26", visible: true, order: 10, highlight: true }
+        ]
+      },
+      eventProcess: {
+        name: "案件处置表",
+        fields: [
+          { key: "handlerDept", field: "handler_dept", label: "处置部门", value: "杜山镇综合执法中心", visible: true, order: 1 },
+          { key: "handler", field: "handler_name", label: "处置人员", value: "张*", visible: true, order: 2 },
+          { key: "acceptTime", field: "accept_time", label: "受理时间", value: "2026-06-24 09:18:42", visible: true, order: 3 },
+          { key: "dispatchTime", field: "dispatch_time", label: "派遣时间", value: "2026-06-24 09:21:10", visible: true, order: 4 },
+          { key: "processStatus", field: "process_status", label: "处置状态", value: "已存档", visible: true, order: 5 },
+          { key: "feedback", field: "feedback_result", label: "反馈结果", value: "已完成现场核查并归档", visible: false, order: 6 }
+        ]
+      },
+      gridArea: {
+        name: "网格区域表",
+        fields: [
+          { key: "gridName", field: "grid_name", label: "网格名称", value: "第二网格", visible: true, order: 1 },
+          { key: "town", field: "town_name", label: "所属镇街", value: "杜山镇", visible: true, order: 2 },
+          { key: "community", field: "community_name", label: "所属片区", value: "杜山镇农科所", visible: true, order: 3 },
+          { key: "gridUser", field: "grid_user", label: "网格员", value: "周*", visible: true, order: 4 },
+          { key: "gridPhone", field: "grid_phone", label: "联系电话", value: "138****5621", visible: false, order: 5 }
+        ]
+      }
+    };
+
+    const sideItems = document.querySelectorAll("[data-screen-target]");
+    const screens = document.querySelectorAll("[data-screen]");
+    const dataSourceSelect = document.getElementById("dataSourceSelect");
+    const tableField = document.getElementById("tableField");
+    const apiFields = document.querySelectorAll(".api-field");
+    const apiUrlInput = document.getElementById("apiUrlInput");
+    const apiMethodSelect = document.getElementById("apiMethodSelect");
+    const apiParamsInput = document.getElementById("apiParamsInput");
+    const fieldSourceTitle = document.getElementById("fieldSourceTitle");
+    const tableSelect = document.getElementById("tableSelect");
+    const eventNameSelect = document.getElementById("eventNameSelect");
+    const addEventField = document.getElementById("addEventField");
+    const newEventNameInput = document.getElementById("newEventNameInput");
+    const addEventBtn = document.getElementById("addEventBtn");
+    const saveConfigBtn = document.getElementById("saveConfigBtn");
+    const saveStatus = document.getElementById("saveStatus");
+    const eventDetailTitle = document.getElementById("eventDetailTitle");
+    const configPreviewTitle = document.getElementById("configPreviewTitle");
+    const fieldConfigBody = document.getElementById("fieldConfigBody");
+    const eventDetailBody = document.getElementById("eventDetailBody");
+    const configPreviewBody = document.getElementById("configPreviewBody");
+    const warningKeyword = document.getElementById("warningKeyword");
+    const warningStatus = document.getElementById("warningStatus");
+    const warningTypeFilter = document.getElementById("warningTypeFilter");
+    const warningSearchBtn = document.getElementById("warningSearchBtn");
+    const warningListBody = document.getElementById("warningListBody");
+    const backToListBtn = document.getElementById("backToListBtn");
+
+    const warningRows = [
+      { id: 1, caseType: "事件-街面秩序-无照经营游商", warningType: "城管事件", status: "未办结", source: "巡查上报", taskNo: "2026062400364", monitor: 0, caseTime: "2026-06-24 10:41:41", deadline: "2026-06-24 15:11:41", area: "葛店经济技术开发区-葛店镇-老街社区" },
+      { id: 2, caseType: "部件-公用设施-污水井盖", warningType: "城管事件", status: "未办结", source: "物联监测", taskNo: "2026062400363", monitor: 12, caseTime: "2026-06-24 10:41:15", deadline: "2026-06-24 15:11:16", area: "鄂城区-凤凰街道-滨湖社区" },
+      { id: 3, caseType: "部件-公用设施-雨水井盖", warningType: "城管事件", status: "未办结", source: "物联监测", taskNo: "2026062400362", monitor: 8, caseTime: "2026-06-24 10:41:15", deadline: "2026-06-24 15:11:15", area: "鄂城区-凤凰街道-滨湖社区" },
+      { id: 4, caseType: "事件-街面秩序-店外经营", warningType: "城管事件", status: "未办结", source: "巡查上报", taskNo: "2026062400361", monitor: 26, caseTime: "2026-06-24 10:41:02", deadline: "2026-06-24 15:11:02", area: "鄂城区-古楼街道-花园社区" },
+      { id: 5, caseType: "事件-街面秩序-无照经营游商", warningType: "消防事件", status: "未办结", source: "巡查上报", taskNo: "2026062400360", monitor: 5, caseTime: "2026-06-24 10:40:17", deadline: "2026-06-24 17:10:26", area: "葛店经济技术开发区-葛店镇-沐鹅湖社区" },
+      { id: 6, caseType: "事件-街面秩序-无照经营游商", warningType: "城管事件", status: "未办结", source: "巡查上报", taskNo: "2026062400359", monitor: 0, caseTime: "2026-06-24 10:39:44", deadline: "2026-06-24 17:10:31", area: "葛店经济技术开发区-葛店镇-岳陂社区" },
+      { id: 7, caseType: "事件-街面秩序-机动车乱停放", warningType: "城管事件", status: "已办结", source: "巡查上报", taskNo: "2026062400358", monitor: 4, caseTime: "2026-06-24 10:39:41", deadline: "2026-06-24 15:09:41", area: "鄂城区-杜山镇-杜山镇农科所" },
+      { id: 8, caseType: "事件-街面秩序-无照经营游商", warningType: "消防事件", status: "未办结", source: "巡查上报", taskNo: "2026062400357", monitor: 4, caseTime: "2026-06-24 10:39:19", deadline: "2026-06-24 17:10:41", area: "葛店经济技术开发区-葛店镇-沐鹅湖社区" }
+    ];
+
+    function cloneConfig(config) {
+      return JSON.parse(JSON.stringify(config));
+    }
+
+    const apiDefaults = {
+      url: "/api/warning/detail",
+      method: "GET",
+      params: '{"taskNo":"2026062400221"}',
+      fields: [
+        { key: "taskNo", field: "data.taskNo", label: "任务号", value: "2026062400221", visible: true, order: 1 },
+        { key: "source", field: "data.sourceName", label: "问题来源", value: "巡查上报", visible: true, order: 2 },
+        { key: "caseType", field: "data.caseTypeName", label: "案件类型", value: "事件-街面秩序-非机动车乱停放", visible: true, order: 3 },
+        { key: "area", field: "data.grid.fullName", label: "区域", value: "鄂城区-杜山镇-杜山镇农科所-第二网格", visible: true, order: 4 },
+        { key: "stage", field: "data.status.stageName", label: "当前阶段", value: "[存档]", visible: true, order: 5 },
+        { key: "location", field: "data.location.name", label: "位置", value: "宇轩农技推广服务部", visible: true, order: 6 },
+        { key: "description", field: "data.description", label: "案件描述", value: "非机动车乱停", visible: true, order: 7 },
+        { key: "deadline", field: "data.deadlineTime", label: "处置截止时间", value: "2026-06-24 11:31:26", visible: true, order: 8, highlight: true },
+        { key: "scenePhoto", field: "data.attachments[0].url", label: "现场照片", value: "assets/reference-screen.png", visible: true, order: 9, display: "image" }
+      ]
+    };
+
+    Object.values(tableFields).forEach((table) => {
+      table.fields.forEach((field) => {
+        field.display = field.display || "row";
+      });
+    });
+    tableFields.eventMain.fields.find((field) => field.key === "location").display = "map";
+    tableFields.eventMain.fields.find((field) => field.key === "stage").display = "tag";
+    tableFields.eventMain.fields.find((field) => field.key === "deadline").display = "tag";
+    apiDefaults.fields.forEach((field) => {
+      field.display = field.display || "row";
+    });
+    apiDefaults.fields.find((field) => field.key === "location").display = "map";
+    apiDefaults.fields.find((field) => field.key === "stage").display = "tag";
+    apiDefaults.fields.find((field) => field.key === "deadline").display = "tag";
+
+    let draftConfig = cloneConfig(tableFields);
+    let savedConfig = cloneConfig(tableFields);
+    let draftApiConfig = cloneConfig(apiDefaults);
+    let savedApiConfig = cloneConfig(apiDefaults);
+    let draftSourceType = "table";
+    let savedSourceType = "table";
+    let savedTableKey = "eventMain";
+    let savedEventName = "";
+    let selectedDetailType = "";
+
+    function showScreen(screenName) {
+      screens.forEach((screen) => screen.classList.remove("active"));
+      document.querySelector(`[data-screen="${screenName}"]`).classList.add("active");
+    }
+
+    function renderEventTitle() {
+      const titleType = selectedDetailType || savedEventName;
+      eventDetailTitle.textContent = titleType ? `事件详情——${titleType}` : "事件详情";
+      configPreviewTitle.textContent = savedEventName ? `事件详情预览——${savedEventName}` : "事件详情预览";
+    }
+
+    function renderWarningList(rows = warningRows) {
+      warningListBody.innerHTML = rows.map((row) => `
+        <tr>
+          <td>${row.id}</td>
+          <td>${row.caseType}</td>
+          <td>${row.warningType}</td>
+          <td>${row.status}</td>
+          <td>${row.source}</td>
+          <td>${row.taskNo}</td>
+          <td>${row.monitor}</td>
+          <td>${row.caseTime}</td>
+          <td>${row.deadline}</td>
+          <td>${row.area}</td>
+          <td><button class="link-btn" type="button" data-open-detail="${row.taskNo}" data-warning-type="${row.warningType}">查看</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function filterWarningList() {
+      const keyword = warningKeyword.value.trim();
+      const status = warningStatus.value;
+      const warningType = warningTypeFilter.value;
+      const rows = warningRows.filter((row) => {
+        const text = `${row.caseType}${row.warningType}${row.status}${row.source}${row.taskNo}${row.area}`;
+        return (!keyword || text.includes(keyword)) &&
+          (!status || row.status === status) &&
+          (!warningType || row.warningType === warningType);
+      });
+      renderWarningList(rows);
+    }
+
+    function activeFields() {
+      const fields = savedSourceType === "api" ? savedApiConfig.fields : savedConfig[savedTableKey].fields;
+      return [...fields]
+        .filter((field) => field.visible)
+        .sort((a, b) => Number(a.order) - Number(b.order));
+    }
+
+    function renderDetailRows(target) {
+      const rows = activeFields().map((field) => {
+        if (field.display === "image") {
+          return `<tr><th>${field.label}</th><td class="preview-image-cell"><div class="preview-image" aria-label="${field.label}"></div></td></tr>`;
+        }
+
+        if (field.display === "map") {
+          return `<tr><th>${field.label}</th><td><span class="map-link">${field.value}</span></td></tr>`;
+        }
+
+        if (field.display === "tag") {
+          return `<tr><th>${field.label}</th><td><span class="status-tag">${field.value}</span></td></tr>`;
+        }
+
+        const value = field.highlight ? `<span class="deadline">${field.value}</span>` : field.value;
+        return `<tr><th>${field.label}</th><td>${value}</td></tr>`;
+      });
+
+      target.innerHTML = rows.length ? rows.join("") : `<tr><td colspan="2"><p class="empty-tip">暂无展示字段</p></td></tr>`;
+    }
+
+    function renderEventDetail() {
+      renderDetailRows(eventDetailBody);
+      renderDetailRows(configPreviewBody);
+    }
+
+    function renderFieldConfig() {
+      const fields = draftSourceType === "api"
+        ? draftApiConfig.fields
+        : draftConfig[tableSelect.value].fields;
+
+      fieldSourceTitle.textContent = draftSourceType === "api" ? "返回字段路径" : "字段";
+
+      if (draftSourceType === "api") {
+        apiUrlInput.value = draftApiConfig.url;
+        apiMethodSelect.value = draftApiConfig.method;
+        apiParamsInput.value = draftApiConfig.params;
+      }
+
+      const sortedFields = fields
+        .sort((a, b) => Number(a.order) - Number(b.order));
+
+      fieldConfigBody.innerHTML = sortedFields.map((field) => {
+        const sourceCell = draftSourceType === "api"
+          ? `<input class="config-input" value="${field.field}" data-field-key="${field.key}" data-config-type="field">`
+          : field.field;
+
+        return `
+          <tr>
+            <td><input type="checkbox" data-field-key="${field.key}" data-config-type="visible" ${field.visible ? "checked" : ""}></td>
+            <td>${sourceCell}</td>
+            <td><input class="config-input" value="${field.label}" data-field-key="${field.key}" data-config-type="label"></td>
+            <td>
+              <select class="config-input" data-field-key="${field.key}" data-config-type="display">
+                <option value="row" ${field.display === "row" ? "selected" : ""}>表格行</option>
+                <option value="image" ${field.display === "image" ? "selected" : ""}>图片预览</option>
+                <option value="map" ${field.display === "map" ? "selected" : ""}>地图定位</option>
+                <option value="tag" ${field.display === "tag" ? "selected" : ""}>标签状态</option>
+              </select>
+            </td>
+            <td><input class="config-order" type="number" min="1" value="${field.order}" data-field-key="${field.key}" data-config-type="order"></td>
+          </tr>
+        `;
+      }).join("");
+
+    }
+
+    function renderSourceMode() {
+      draftSourceType = dataSourceSelect.value;
+      tableField.hidden = draftSourceType !== "table";
+      apiFields.forEach((field) => {
+        field.hidden = draftSourceType !== "api";
+      });
+      renderFieldConfig();
+    }
+
+    sideItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        sideItems.forEach((sideItem) => sideItem.classList.remove("active"));
+        item.classList.add("active");
+        if (item.dataset.screenTarget === "eventList") {
+          selectedDetailType = "";
+          renderEventTitle();
+        }
+        showScreen(item.dataset.screenTarget);
+      });
+    });
+
+    warningSearchBtn.addEventListener("click", filterWarningList);
+
+    warningListBody.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-open-detail]");
+      if (!button) return;
+      selectedDetailType = button.dataset.warningType;
+      renderEventTitle();
+      showScreen("eventDetail");
+    });
+
+    backToListBtn.addEventListener("click", () => {
+      selectedDetailType = "";
+      renderEventTitle();
+      showScreen("eventList");
+    });
+
+    dataSourceSelect.addEventListener("change", () => {
+      saveStatus.textContent = "";
+      renderSourceMode();
+    });
+
+    tableSelect.addEventListener("change", () => {
+      saveStatus.textContent = "";
+      renderFieldConfig();
+    });
+
+    apiUrlInput.addEventListener("input", () => {
+      draftApiConfig.url = apiUrlInput.value.trim();
+      saveStatus.textContent = "";
+    });
+
+    apiMethodSelect.addEventListener("change", () => {
+      draftApiConfig.method = apiMethodSelect.value;
+      saveStatus.textContent = "";
+    });
+
+    apiParamsInput.addEventListener("input", () => {
+      draftApiConfig.params = apiParamsInput.value.trim();
+      saveStatus.textContent = "";
+    });
+
+    fieldConfigBody.addEventListener("input", (event) => {
+      const control = event.target;
+      const fields = draftSourceType === "api" ? draftApiConfig.fields : draftConfig[tableSelect.value].fields;
+      const field = fields.find((item) => item.key === control.dataset.fieldKey);
+      if (!field) return;
+
+      if (control.dataset.configType === "field") field.field = control.value.trim() || field.field;
+      if (control.dataset.configType === "label") field.label = control.value.trim() || field.field;
+      if (control.dataset.configType === "order") field.order = Number(control.value) || 1;
+      saveStatus.textContent = "";
+    });
+
+    fieldConfigBody.addEventListener("change", (event) => {
+      const control = event.target;
+      const fields = draftSourceType === "api" ? draftApiConfig.fields : draftConfig[tableSelect.value].fields;
+      const field = fields.find((item) => item.key === control.dataset.fieldKey);
+      if (!field) return;
+
+      if (control.dataset.configType === "visible") field.visible = control.checked;
+      if (control.dataset.configType === "display") field.display = control.value;
+      saveStatus.textContent = "";
+    });
+
+    eventNameSelect.addEventListener("change", () => {
+      addEventField.hidden = eventNameSelect.value !== "__add__";
+      if (!addEventField.hidden) {
+        newEventNameInput.focus();
+      }
+      saveStatus.textContent = "";
+    });
+
+    addEventBtn.addEventListener("click", () => {
+      const newName = newEventNameInput.value.trim();
+      if (!newName) {
+        newEventNameInput.focus();
+        return;
+      }
+
+      const exists = [...eventNameSelect.options].some((option) => option.value === newName);
+      if (!exists) {
+        const option = document.createElement("option");
+        option.value = newName;
+        option.textContent = newName;
+        eventNameSelect.insertBefore(option, eventNameSelect.querySelector('option[value="__add__"]'));
+      }
+
+      eventNameSelect.value = newName;
+      newEventNameInput.value = "";
+      addEventField.hidden = true;
+      saveStatus.textContent = "";
+    });
+
+    saveConfigBtn.addEventListener("click", () => {
+      draftApiConfig.url = apiUrlInput.value.trim();
+      draftApiConfig.method = apiMethodSelect.value;
+      draftApiConfig.params = apiParamsInput.value.trim();
+      savedConfig = cloneConfig(draftConfig);
+      savedApiConfig = cloneConfig(draftApiConfig);
+      savedSourceType = draftSourceType;
+      savedTableKey = tableSelect.value;
+      savedEventName = eventNameSelect.value === "__add__" ? "" : eventNameSelect.value;
+      renderEventTitle();
+      renderEventDetail();
+      saveStatus.textContent = "已保存";
+    });
+
+    const shareData = {
+      units: {
+        total: "共 343 条",
+        pages: ["1", "2", "3", "4", "···", "43"],
+        records: [
+          ["单位（机构）名称", "个体工商户丁*", "统一社会信用代码", "92420704MA4AA5AK91", "标准地址名称", "湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路11号1栋2屋201室"],
+          ["单位（机构）名称", "个体工商户严*", "统一社会信用代码", "92420704MA4B695622", "标准地址名称", "湖北省鄂州市鄂城区杜山镇旭东村府园路6-19号"],
+          ["单位（机构）名称", "个体工商户严*", "统一社会信用代码", "92420704MA4A8G0D7U", "标准地址名称", "湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路13号1栋2单元5层502室"],
+          ["单位（机构）名称", "个体工商户严*", "统一社会信用代码", "92420704MA7H01YF7J", "标准地址名称", "湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路14号1栋"],
+          ["单位（机构）名称", "个体工商户严*", "统一社会信用代码", "92420704MA4B4F250M", "标准地址名称", "湖北省鄂州市鄂城区杜山镇杜山镇农科所府园路12号1栋2单元2层201室"],
+          ["单位（机构）名称", "个体工商户余*", "统一社会信用代码", "92420704MA4B4DW80X", "标准地址名称", "湖北省鄂州市鄂城区杜山镇杜山镇农科所旭光大道154-2号"]
+        ]
+      },
+      police: {
+        total: "共 6 条",
+        pages: ["1"],
+        records: [
+          ["姓名", "李*", "所属单位", "杜山派出所", "联系电话", "0711-385****"],
+          ["姓名", "王*", "所属单位", "鄂城区公安分局", "联系电话", "0711-322****"],
+          ["姓名", "陈*", "所属单位", "杜山镇警务室", "联系电话", "0711-386****"]
+        ]
+      },
+      camera: {
+        total: "共 12 条",
+        pages: ["1", "2"],
+        records: [
+          ["设备名称", "府园路路口球机", "设备编号", "EZ-DS-000231", "覆盖范围", "府园路与旭光大道交叉口"],
+          ["设备名称", "杜山镇政府门前枪机", "设备编号", "EZ-DS-000244", "覆盖范围", "杜山镇人民政府周边"],
+          ["设备名称", "农科所入口监控", "设备编号", "EZ-DS-000268", "覆盖范围", "农科所入口及沿街商铺"]
+        ]
+      },
+      grid: {
+        total: "共 8 条",
+        pages: ["1"],
+        records: [
+          ["姓名", "周*", "责任网格", "第二网格", "联系电话", "138****5621"],
+          ["姓名", "刘*", "责任网格", "杜山镇农科所片区", "联系电话", "139****8012"],
+          ["姓名", "黄*", "责任网格", "旭光大道沿线", "联系电话", "177****3409"]
+        ]
+      },
+      school: {
+        total: "共 5 条",
+        pages: ["1"],
+        records: [
+          ["学校名称", "鄂州市第二中学", "学校类型", "初级中学", "地址", "鄂城区杜山镇周边片区"],
+          ["学校名称", "杜山镇中心学校", "学校类型", "九年一贯制", "地址", "杜山镇府园路附近"],
+          ["学校名称", "杜山镇中心幼儿园", "学校类型", "幼儿园", "地址", "杜山镇居民集中区"]
+        ]
+      },
+      hospital: {
+        total: "共 4 条",
+        pages: ["1"],
+        records: [
+          ["机构名称", "杜山镇卫生院", "机构类型", "基层医疗机构", "地址", "鄂城区杜山镇集镇区域"],
+          ["机构名称", "杜山社区卫生服务站", "机构类型", "社区卫生服务", "地址", "杜山镇社区服务圈"],
+          ["机构名称", "便民药房", "机构类型", "药品零售", "地址", "府园路沿街商铺"]
+        ]
+      },
+      place: {
+        total: "共 18 条",
+        pages: ["1", "2"],
+        records: [
+          ["场所名称", "杜山镇人民政府", "场所类型", "党政机关", "地址", "鄂城区杜山镇政府周边"],
+          ["场所名称", "青天湖湿地公园", "场所类型", "公共游憩场所", "地址", "杜山镇青天湖片区"],
+          ["场所名称", "武汉港工业园", "场所类型", "产业园区", "地址", "鄂城区杜山镇东侧片区"]
+        ]
+      }
+    };
+
+    const shareList = document.getElementById("shareList");
+    const sharePagination = document.getElementById("sharePagination");
+    const shareTabs = document.querySelectorAll("[data-share-tab]");
+
+    function renderShareList(type) {
+      const data = shareData[type];
+      shareList.innerHTML = data.records.map((record) => `
+        <div class="share-record">
+          <div><strong>${record[0]}</strong> ${record[1]}</div>
+          <div><strong>${record[2]}</strong> ${record[3]}</div>
+          <div><strong>${record[4]}</strong> ${record[5]}</div>
+        </div>
+      `).join("");
+
+      sharePagination.innerHTML = [
+        ...data.pages.map((page, index) => `<span class="${index === 0 ? "active-page" : ""}">${page}</span>`),
+        `<span>${data.total}</span>`
+      ].join("");
+    }
+
+    shareTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        shareTabs.forEach((item) => {
+          item.classList.remove("active");
+          item.setAttribute("aria-selected", "false");
+        });
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        renderShareList(tab.dataset.shareTab);
+      });
+    });
+
+    renderSourceMode();
+    renderEventDetail();
+    renderEventTitle();
+    renderWarningList();
+  </script>
+</body>
+</html>
