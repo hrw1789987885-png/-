@@ -586,6 +586,18 @@
       min-width: 0;
     }
 
+    .coordinate-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .coordinate-row .fire-field,
+    .coordinate-row .detail-mini-row {
+      margin-bottom: 0;
+    }
+
     .multi-select {
       position: relative;
       width: 100%;
@@ -1268,62 +1280,59 @@
       padding: 16px 12px 12px;
     }
 
-    .process-tabs {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin: 4px 0 8px;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .refresh-btn {
-      height: 24px;
-      padding: 0 12px;
-      border: 0;
-      border-radius: 3px;
-      color: #fff;
-      font: inherit;
-      font-size: 12px;
-      background: #409eff;
-    }
-
     .process-form {
-      border: 1px solid #dfe6ef;
-      padding: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fbff;
     }
 
     .process-form label {
       display: block;
-      margin-bottom: 4px;
-      color: #445064;
+      margin: 10px 0 6px;
+      color: #24364b;
       font-size: 13px;
+      font-weight: 600;
+    }
+
+    .process-form label:first-child {
+      margin-top: 0;
     }
 
     .process-form textarea {
       width: 100%;
-      height: 74px;
-      padding: 8px 10px;
+      height: 86px;
+      padding: 10px 12px;
       border: 1px solid #cfd7e3;
-      border-radius: 4px;
+      border-radius: 6px;
       font: inherit;
       resize: vertical;
+      background: #fff;
+      outline: none;
+    }
+
+    .process-form textarea:focus,
+    .process-time input:focus {
+      border-color: #168ef0;
+      box-shadow: 0 0 0 2px rgba(22, 142, 240, 0.1);
     }
 
     .process-time {
       display: grid;
       grid-template-columns: 1fr 60px 60px;
       gap: 8px;
-      margin: 8px 0;
+      margin: 0;
     }
 
     .process-time input {
       height: 30px;
       padding: 0 10px;
       border: 1px solid #cfd7e3;
-      border-radius: 4px;
+      border-radius: 6px;
       font: inherit;
+      background: #fff;
+      outline: none;
     }
 
     .process-upload {
@@ -1331,11 +1340,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 120px;
-      margin-bottom: 10px;
-      border: 1px dashed #c9def7;
-      color: #1f2d3d;
+      height: 108px;
+      margin-bottom: 12px;
+      border: 1px dashed #a9d3ff;
+      border-radius: 8px;
+      color: #526273;
       font-size: 14px;
+      background: #fff;
     }
 
     .process-upload a {
@@ -1343,14 +1354,43 @@
       text-decoration: none;
     }
 
+    .judgement-options {
+      display: flex;
+      gap: 22px;
+      margin: 0 0 10px;
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .judgement-options label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      color: #24364b;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .judgement-options input {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      accent-color: #168ef0;
+    }
+
     .process-actions {
       display: flex;
+      justify-content: flex-end;
       gap: 12px;
     }
 
     .process-actions .add-btn {
       min-width: 100px;
-      height: 26px;
+      height: 32px;
       font-size: 13px;
     }
 
@@ -1393,13 +1433,14 @@
     }
 
     .timeline-card {
-      padding: 12px;
-      border: 1px solid #dfe6ef;
+      padding: 12px 14px;
+      border: 1px solid #e2e8f0;
       border-radius: 8px;
       color: #001b44;
       font-size: 13px;
       line-height: 1.6;
       background: #fff;
+      box-shadow: 0 2px 8px rgba(31, 45, 61, 0.06);
     }
 
     .timeline-card strong {
@@ -1419,6 +1460,187 @@
 
     .timeline-tools .delete {
       color: #ff6b6b;
+    }
+
+    .workflow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 6px 0 18px;
+      padding: 12px 6px 16px;
+      border-bottom: 1px solid #e8edf3;
+    }
+
+    .workflow-step {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      border: 0;
+      color: #8b95a3;
+      font: inherit;
+      font-size: 13px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .workflow-step .step-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: #fff;
+      background: #9d9d9d;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+    }
+
+    .workflow-step.active {
+      color: #526fff;
+      font-weight: 600;
+    }
+
+    .workflow-step.active .step-icon {
+      background: #6684ff;
+      box-shadow: 0 4px 12px rgba(82, 111, 255, 0.34);
+    }
+
+    .workflow-records {
+      border-top: 1px solid #f0f2f5;
+    }
+
+    .workflow-record {
+      display: grid;
+      grid-template-columns: 78px 28px 1fr;
+      gap: 10px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eef1f5;
+      color: #001b44;
+      font-size: 13px;
+    }
+
+    .workflow-time {
+      padding-top: 28px;
+      color: #001b44;
+      line-height: 1.7;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .workflow-line {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 2px;
+    }
+
+    .workflow-line::after {
+      width: 8px;
+      flex: 1;
+      margin-top: 6px;
+      border-radius: 2px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #65bcff 0 7px,
+        transparent 7px 13px
+      );
+      content: "";
+    }
+
+    .workflow-dot {
+      width: 20px;
+      height: 20px;
+      border: 5px solid #ffe6b2;
+      border-radius: 50%;
+      background: #ffa800;
+      box-shadow: 0 0 0 2px #fff;
+    }
+
+    .workflow-content {
+      line-height: 1.7;
+    }
+
+    .workflow-content h3 {
+      margin: 0 0 10px;
+      color: #001b44;
+      font-size: 15px;
+    }
+
+    .workflow-content .org {
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .workflow-content p {
+      margin: 0 0 8px;
+    }
+
+    .workflow-form {
+      display: none;
+      margin-bottom: 16px;
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fbff;
+    }
+
+    .workflow-form.active {
+      display: block;
+    }
+
+    .workflow-form-title {
+      margin: 0 0 12px;
+      color: #122033;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .workflow-form label {
+      display: block;
+      margin: 10px 0 6px;
+      color: #24364b;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .workflow-form label:first-of-type {
+      margin-top: 0;
+    }
+
+    .workflow-form textarea,
+    .workflow-form select {
+      width: 100%;
+      border: 1px solid #cfd7e3;
+      border-radius: 6px;
+      color: #2d3a4c;
+      font: inherit;
+      font-size: 14px;
+      background: #fff;
+      outline: none;
+    }
+
+    .workflow-form textarea {
+      height: 90px;
+      padding: 10px 12px;
+      resize: vertical;
+    }
+
+    .workflow-form select {
+      height: 34px;
+      padding: 0 12px;
+    }
+
+    .workflow-form textarea:focus,
+    .workflow-form select:focus {
+      border-color: #168ef0;
+      box-shadow: 0 0 0 2px rgba(22, 142, 240, 0.1);
+    }
+
+    .workflow-form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 12px;
     }
 
     .readonly-list {
@@ -1892,8 +2114,8 @@
       <nav class="topnav" aria-label="顶部导航">
         <a href="#">全景图</a>
         <a href="#">大屏应用</a>
-        <a class="active" href="#">应用场景</a>
-        <a href="#">指挥调度</a>
+        <a href="#">应用场景</a>
+        <a class="active" href="#">指挥调度</a>
         <a href="#">
           <span class="mini-icon" aria-hidden="true">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
@@ -2074,10 +2296,10 @@
               <label class="form-label" for="eventType">事件类型</label>
               <div class="select-wrap">
                 <select class="event-select" id="eventType" name="eventType">
-                  <option value="general" selected>一般事件</option>
+                  <option value="general" selected>普通事件</option>
                   <option value="fire">消防事件</option>
                   <option value="drowning">防溺水事件</option>
-                  <option value="emergency">应急事件</option>
+                  <option value="straw">秸秆焚烧</option>
                 </select>
               </div>
             </div>
@@ -2125,16 +2347,38 @@
               </div>
 
               <div class="field-row compact">
-                <label class="form-label required" for="responsibleDept">责任部门</label>
+                <label class="form-label required">责任部门</label>
                 <div class="field-control">
-                  <button class="plain-btn" id="responsibleDept" type="button">请选择</button>
+                  <div class="multi-select" id="responsibleDept">
+                    <button class="multi-select-trigger" type="button">
+                      <span class="multi-placeholder">请选择责任部门</span>
+                    </button>
+                    <div class="multi-select-menu">
+                      <label class="multi-option"><input type="radio" name="responsibleDept" value="市政设施中心" />市政设施中心</label>
+                      <label class="multi-option"><input type="radio" name="responsibleDept" value="凤凰街道综合执法中心" />凤凰街道综合执法中心</label>
+                      <label class="multi-option"><input type="radio" name="responsibleDept" value="城管委" />城管委</label>
+                      <label class="multi-option"><input type="radio" name="responsibleDept" value="生态环境局" />生态环境局</label>
+                      <label class="multi-option"><input type="radio" name="responsibleDept" value="梁子湖区水利局" />梁子湖区水利局</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div class="field-row compact">
-                <label class="form-label" for="assistDeptGeneral">协助部门</label>
+                <label class="form-label">协助部门</label>
                 <div class="field-control">
-                  <button class="plain-btn" id="assistDeptGeneral" type="button">请选择</button>
+                  <div class="multi-select" id="assistDeptGeneral">
+                    <button class="multi-select-trigger" type="button">
+                      <span class="multi-placeholder">请选择协助部门</span>
+                    </button>
+                    <div class="multi-select-menu">
+                      <label class="multi-option"><input type="checkbox" value="公安部门" />公安部门</label>
+                      <label class="multi-option"><input type="checkbox" value="应急管理部门" />应急管理部门</label>
+                      <label class="multi-option"><input type="checkbox" value="医疗救护部门" />医疗救护部门</label>
+                      <label class="multi-option"><input type="checkbox" value="交通管理部门" />交通管理部门</label>
+                      <label class="multi-option"><input type="checkbox" value="街道社区" />街道社区</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -2210,14 +2454,15 @@
                 <textarea class="field-textarea" id="addressPatch" placeholder="当前警情地址"></textarea>
               </div>
 
-              <div class="fire-field">
-                <label for="longitude">经度X</label>
-                <input class="field-input" id="longitude" type="text" placeholder="请输入" />
-              </div>
-
-              <div class="fire-field">
-                <label for="latitude">纬度Y</label>
-                <input class="field-input" id="latitude" type="text" placeholder="请输入" />
+              <div class="coordinate-row">
+                <div class="fire-field">
+                  <label for="longitude">经度X</label>
+                  <input class="field-input" id="longitude" type="text" placeholder="请输入" />
+                </div>
+                <div class="fire-field">
+                  <label for="latitude">纬度Y</label>
+                  <input class="field-input" id="latitude" type="text" placeholder="请输入" />
+                </div>
               </div>
 
               <div class="fire-field">
@@ -2270,8 +2515,6 @@
                 <button class="add-btn" type="button">新增</button>
               </div>
             </div>
-            <div class="event-form pending-form hidden" data-event-form="drowning">防溺水事件表单待补充</div>
-            <div class="event-form pending-form hidden" data-event-form="emergency">应急事件表单待补充</div>
           </section>
 
           <section class="panel map-panel" aria-label="地图区域">
@@ -2360,7 +2603,7 @@
                   <tr>
                     <td>2</td>
                     <td title="湖北省鄂州市鄂城区凤凰街道东升社区司徒路25号恒大首府二㘵4栋2单元火灾扑救事件">湖北省鄂州市鄂城区凤凰街道东升社区司徒路25号恒大首府二㘵4栋2单元火灾扑救事件</td>
-                    <td><span class="tag normal">一般事件</span></td>
+                    <td><span class="tag normal">普通事件</span></td>
                     <td><span class="tag done">已办结</span></td>
                     <td>2026-06-22 17:04:29</td>
                     <td><div class="action-cell"><button class="detail-link" type="button" data-detail-type="general">详情</button><button class="supervise-link" type="button">督办</button></div></td>
@@ -2384,7 +2627,7 @@
                   <tr>
                     <td>5</td>
                     <td title="湖北省鄂州市梁子湖区沼山镇桥柯村桥柯大屋湾221号抢险救援事件">湖北省鄂州市梁子湖区沼山镇桥柯村桥柯大屋湾221号抢险救援事件</td>
-                    <td><span class="tag normal">一般事件</span></td>
+                    <td><span class="tag normal">普通事件</span></td>
                     <td><span class="tag done">已办结</span></td>
                     <td>2026-06-22 16:33:22</td>
                     <td><div class="action-cell"><button class="detail-link" type="button" data-detail-type="general">详情</button><button class="supervise-link" type="button">督办</button></div></td>
@@ -2420,7 +2663,6 @@
                 事件详情与数据共享清单
                 <span class="spacer"></span>
                 <button class="ghost-btn" type="button" id="backToList">返回列表</button>
-                <button class="ghost-btn" type="button">隐藏处置流程</button>
               </h2>
 
               <h3 class="section-title">警情类型</h3>
@@ -2441,13 +2683,15 @@
                   <button class="plain-btn save" type="button">保存</button>
                   <button class="plain-btn" type="button">图上选点</button>
                 </div>
-                <div class="detail-mini-row">
-                  <span>经度</span>
-                  <div class="detail-value">114.663055</div>
-                </div>
-                <div class="detail-mini-row">
-                  <span>纬度</span>
-                  <div class="detail-value">30.51072</div>
+                <div class="coordinate-row">
+                  <div class="detail-mini-row">
+                    <span>经度</span>
+                    <div class="detail-value">114.663055</div>
+                  </div>
+                  <div class="detail-mini-row">
+                    <span>纬度</span>
+                    <div class="detail-value">30.51072</div>
+                  </div>
                 </div>
                 <div class="detail-mini-row">
                   <span>警情时间</span>
@@ -2503,11 +2747,6 @@
               处置流程
             </h2>
 
-            <div class="process-tabs">
-              <span>收起录入</span>
-              <button class="refresh-btn" type="button">刷新</button>
-            </div>
-
             <div class="process-form">
               <label for="processDesc">处置描述:</label>
               <textarea id="processDesc" placeholder="请输入处置描述"></textarea>
@@ -2562,7 +2801,7 @@
                   <path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Z" fill="#168ef0"/>
                   <path d="m4 12 8 4.5 8-4.5" stroke="#168ef0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                一般事件详情
+                普通事件详情
                 <span class="spacer"></span>
                 <button class="ghost-btn back-list-btn" type="button">返回列表</button>
               </h2>
@@ -2572,7 +2811,7 @@
                 <div class="readonly-list">
                   <div class="readonly-item">
                     <span class="readonly-label">事件类型</span>
-                    <div class="readonly-value">一般事件</div>
+                    <div class="readonly-value">普通事件</div>
                   </div>
                   <div class="readonly-item">
                     <span class="readonly-label">事件标题</span>
@@ -2617,7 +2856,7 @@
             </div>
           </section>
 
-          <section class="detail-panel detail-map-panel" aria-label="一般事件地图">
+          <section class="detail-panel detail-map-panel" aria-label="普通事件地图">
             <div class="map">
               <span class="water one"></span>
               <span class="water two"></span>
@@ -2648,52 +2887,134 @@
               </svg>
               处置流程
             </h2>
-            <div class="process-tabs">
-              <span>处置录入</span>
-              <button class="refresh-btn" type="button">刷新</button>
+            <div class="workflow-steps">
+              <button class="workflow-step active" type="button" data-workflow-form="accept">
+                <span class="step-icon">↧</span>
+                受理
+              </button>
+              <button class="workflow-step" type="button" data-workflow-form="handle">
+                <span class="step-icon">↧</span>
+                处置
+              </button>
+              <button class="workflow-step" type="button" data-workflow-form="transfer">
+                <span class="step-icon">→</span>
+                转办
+              </button>
+              <button class="workflow-step" type="button" data-workflow-form="finish">
+                <span class="step-icon">✓</span>
+                办结
+              </button>
             </div>
-            <div class="process-form">
-              <label for="generalProcessDesc">处置描述:</label>
-              <textarea id="generalProcessDesc" placeholder="请输入处置描述"></textarea>
-              <label>处置时间</label>
-              <div class="process-time">
-                <input type="text" value="▦  2026-06-25" />
-                <input type="text" value="10" />
-                <input type="text" value="50" />
+
+            <div class="workflow-form active" data-workflow-panel="accept">
+              <h3 class="workflow-form-title">受理</h3>
+              <label for="acceptContent">受理内容</label>
+              <textarea id="acceptContent" placeholder="请输入受理内容"></textarea>
+              <div class="workflow-form-actions">
+                <button class="plain-btn" type="button">清空</button>
+                <button class="add-btn" type="button">受理</button>
               </div>
-              <label>处置文件或照片:</label>
+            </div>
+
+            <div class="workflow-form" data-workflow-panel="handle">
+              <h3 class="workflow-form-title">处置</h3>
+              <label for="handleContent">处置内容</label>
+              <textarea id="handleContent" placeholder="请输入处置内容"></textarea>
+              <label>处置文件或照片</label>
               <div class="process-upload">
                 <div>↑</div>
                 <div>将文件拖到此处，或<a href="#">点击上传</a></div>
               </div>
-              <div class="process-actions">
-                <button class="add-btn" type="button">处置</button>
+              <div class="workflow-form-actions">
                 <button class="plain-btn" type="button">清空</button>
+                <button class="add-btn" type="button">处置</button>
               </div>
             </div>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-time">2026-06-22 17:10:00</div>
-                <div class="timeline-card">
-                  <strong>受理</strong>
-                  描述：事件已派发至凤凰街道综合执法中心核查。<br />
-                  操作员：系统管理员
+
+            <div class="workflow-form" data-workflow-panel="transfer">
+              <h3 class="workflow-form-title">转办</h3>
+              <label for="transferTarget">目标部门</label>
+              <select id="transferTarget">
+                <option selected>请选择目标部门</option>
+                <option>鄂州市数据局</option>
+                <option>市政设施中心</option>
+                <option>凤凰街道综合执法中心</option>
+                <option>城管委</option>
+              </select>
+              <label for="transferDesc">流转说明</label>
+              <textarea id="transferDesc" placeholder="请输入流转说明"></textarea>
+              <div class="workflow-form-actions">
+                <button class="plain-btn" type="button">清空</button>
+                <button class="add-btn" type="button">转办</button>
+              </div>
+            </div>
+
+            <div class="workflow-form" data-workflow-panel="finish">
+              <h3 class="workflow-form-title">办结</h3>
+              <label for="finishDesc">办结说明</label>
+              <textarea id="finishDesc" placeholder="请输入办结说明"></textarea>
+              <label>办结材料上传</label>
+              <div class="process-upload">
+                <div>↑</div>
+                <div>将材料拖到此处，或<a href="#">点击上传</a></div>
+              </div>
+              <div class="workflow-form-actions">
+                <button class="plain-btn" type="button">清空</button>
+                <button class="add-btn" type="button">办结</button>
+              </div>
+            </div>
+
+            <div class="workflow-records">
+              <div class="workflow-record">
+                <div class="workflow-time">2026-06-09<br />14:35:49</div>
+                <div class="workflow-line"><span class="workflow-dot"></span></div>
+                <div class="workflow-content">
+                  <div class="org">鄂州市</div>
+                  <h3>新增事件</h3>
+                  <p>操作：鄂州市 超级管理员</p>
+                  <p>描述：市民来电反映：本人是泽林镇砖瓦村2组村民，称前期村内（2组和3组）都是半年才缴纳一次水费，现被告知后期需要三个月缴纳一次水费，因未及时缴纳水费，导致今日村内停水至今未恢复，严重影响村民生活，请部门核实处理。（未水改。）</p>
+                  <p>热点事件测试推送</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-time">2026-06-22 18:20:00</div>
-                <div class="timeline-card">
-                  <strong>处置</strong>
-                  描述：工作人员已到现场核查，确认公共区域设施破损，安排维修。<br />
-                  操作员：凤凰街道综合执法中心
+
+              <div class="workflow-record">
+                <div class="workflow-time">2026-06-25<br />15:58:36</div>
+                <div class="workflow-line"><span class="workflow-dot"></span></div>
+                <div class="workflow-content">
+                  <div class="org">鄂州市数据局</div>
+                  <h3>受理</h3>
+                  <p>操作：鄂州市数据局 市数据局</p>
+                  <p>描述：受理说明？？</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-time">2026-06-23 09:30:00</div>
-                <div class="timeline-card">
-                  <strong>办结</strong>
-                  描述：现场维修完成，通行恢复正常。<br />
-                  操作员：凤凰街道综合执法中心
+
+              <div class="workflow-record">
+                <div class="workflow-time">2026-06-25<br />15:58:47</div>
+                <div class="workflow-line"><span class="workflow-dot"></span></div>
+                <div class="workflow-content">
+                  <h3>处置</h3>
+                  <p>操作：鄂州市数据局 市数据局</p>
+                  <p>描述：啦已经处置</p>
+                </div>
+              </div>
+
+              <div class="workflow-record">
+                <div class="workflow-time">2026-06-25<br />15:59:14</div>
+                <div class="workflow-line"><span class="workflow-dot"></span></div>
+                <div class="workflow-content">
+                  <h3>处置</h3>
+                  <p>操作：鄂州市数据局 市数据局</p>
+                  <p>描述：再次处置</p>
+                </div>
+              </div>
+
+              <div class="workflow-record">
+                <div class="workflow-time">2026-06-25<br />15:59:43</div>
+                <div class="workflow-line"><span class="workflow-dot"></span></div>
+                <div class="workflow-content">
+                  <h3>申请办结</h3>
+                  <p>操作：鄂州市数据局 市数据局</p>
+                  <p>描述：申请办结</p>
                 </div>
               </div>
             </div>
@@ -2746,7 +3067,7 @@
                   <td>1</td>
                   <td>DJ202606250001</td>
                   <td>城区道路井盖松动需尽快处置</td>
-                  <td><span class="tag normal">一般事件</span></td>
+                  <td><span class="tag normal">普通事件</span></td>
                   <td>市民热线</td>
                   <td>市政设施中心</td>
                   <td><span class="tag rescue">待办理</span></td>
@@ -2782,7 +3103,7 @@
                   <td>4</td>
                   <td>DJ202606250004</td>
                   <td>背街小巷垃圾堆放影响通行</td>
-                  <td><span class="tag normal">一般事件</span></td>
+                  <td><span class="tag normal">普通事件</span></td>
                   <td>社区上报</td>
                   <td>城管委</td>
                   <td><span class="tag rescue">待核查</span></td>
@@ -2898,10 +3219,6 @@
               </svg>
               处置流程
             </h2>
-            <div class="process-tabs">
-              <span>处置录入</span>
-              <button class="refresh-btn" type="button">刷新</button>
-            </div>
             <div class="process-form">
               <label for="drowningProcessDesc">处置描述:</label>
               <textarea id="drowningProcessDesc" placeholder="请输入处置描述"></textarea>
@@ -2910,6 +3227,11 @@
                 <input type="text" value="▦  2026-06-25" />
                 <input type="text" value="10" />
                 <input type="text" value="58" />
+              </div>
+              <label>真假研判:</label>
+              <div class="judgement-options">
+                <label><input type="radio" name="drowningJudgement" value="真实" checked />真实</label>
+                <label><input type="radio" name="drowningJudgement" value="误报" />误报</label>
               </div>
               <label>处置文件或照片:</label>
               <div class="process-upload">
@@ -3014,10 +3336,6 @@
               </svg>
               处置流程
             </h2>
-            <div class="process-tabs">
-              <span>处置录入</span>
-              <button class="refresh-btn" type="button">刷新</button>
-            </div>
             <div class="process-form">
               <label for="ecologyProcessDesc">处置描述:</label>
               <textarea id="ecologyProcessDesc" placeholder="请输入处置描述"></textarea>
@@ -3026,6 +3344,11 @@
                 <input type="text" value="▦  2026-06-25" />
                 <input type="text" value="11" />
                 <input type="text" value="02" />
+              </div>
+              <label>真假研判:</label>
+              <div class="judgement-options">
+                <label><input type="radio" name="ecologyJudgement" value="真实" checked />真实</label>
+                <label><input type="radio" name="ecologyJudgement" value="误报" />误报</label>
               </div>
               <label>处置文件或照片:</label>
               <div class="process-upload">
@@ -3096,40 +3419,57 @@
     const eventForms = document.querySelectorAll("[data-event-form]");
 
     eventType.addEventListener("change", () => {
+      const formType = ["drowning", "straw"].includes(eventType.value) ? "general" : eventType.value;
       eventForms.forEach((form) => {
-        form.classList.toggle("hidden", form.dataset.eventForm !== eventType.value);
+        form.classList.toggle("hidden", form.dataset.eventForm !== formType);
       });
     });
 
-    const assistDept = document.getElementById("assistDept");
-    const assistTrigger = assistDept.querySelector(".multi-select-trigger");
-    const assistCheckboxes = assistDept.querySelectorAll("input[type='checkbox']");
+    function setupMultiSelect(selectEl) {
+      const trigger = selectEl.querySelector(".multi-select-trigger");
+      const inputs = selectEl.querySelectorAll("input");
+      const placeholder = trigger.textContent.trim();
 
-    function updateAssistLabel() {
-      const selected = Array.from(assistCheckboxes)
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value);
+      function updateLabel() {
+        const selected = Array.from(inputs)
+          .filter((input) => input.checked)
+          .map((input) => input.value);
 
-      assistTrigger.innerHTML = selected.length
-        ? selected.join("、")
-        : '<span class="multi-placeholder">请选择协助部门</span>';
+        trigger.innerHTML = selected.length
+          ? selected.join("、")
+          : `<span class="multi-placeholder">${placeholder}</span>`;
+      }
+
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
+          if (openSelect !== selectEl) {
+            openSelect.classList.remove("open");
+          }
+        });
+        selectEl.classList.toggle("open");
+      });
+
+      selectEl.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+
+      inputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          updateLabel();
+          if (input.type === "radio") {
+            selectEl.classList.remove("open");
+          }
+        });
+      });
     }
 
-    assistTrigger.addEventListener("click", (event) => {
-      event.stopPropagation();
-      assistDept.classList.toggle("open");
-    });
-
-    assistDept.addEventListener("click", (event) => {
-      event.stopPropagation();
-    });
-
-    assistCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", updateAssistLabel);
-    });
+    document.querySelectorAll(".multi-select").forEach(setupMultiSelect);
 
     document.addEventListener("click", () => {
-      assistDept.classList.remove("open");
+      document.querySelectorAll(".multi-select.open").forEach((selectEl) => {
+        selectEl.classList.remove("open");
+      });
     });
 
     const listWorkspace = document.querySelector(".list-workspace");
@@ -3197,6 +3537,19 @@
 
     document.querySelectorAll(".back-todo-btn").forEach((button) => {
       button.addEventListener("click", returnFromDetail);
+    });
+
+    document.querySelectorAll(".workflow-step").forEach((button) => {
+      button.addEventListener("click", () => {
+        const group = button.closest(".workflow-steps");
+        group.querySelectorAll(".workflow-step").forEach((step) => step.classList.remove("active"));
+        button.classList.add("active");
+        const panelName = button.dataset.workflowForm;
+        const processPanel = button.closest(".process-panel");
+        processPanel.querySelectorAll("[data-workflow-panel]").forEach((panel) => {
+          panel.classList.toggle("active", panel.dataset.workflowPanel === panelName);
+        });
+      });
     });
 
     myTodoMenu.addEventListener("click", () => {
