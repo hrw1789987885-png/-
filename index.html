@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>鄂州市数字监管系统</title>
+  <title>鄂州市数字监管系统（原型图）</title>
   <style>
     * {
       box-sizing: border-box;
@@ -1770,11 +1770,84 @@
       padding: 10px 0;
       color: #1f2d3d;
       font-size: 14px;
+      cursor: pointer;
     }
 
     .general-tab.active {
       color: #168ef0;
       border-bottom: 2px solid #168ef0;
+    }
+
+    .share-content {
+      padding: 4px 0 12px;
+    }
+
+    .share-title {
+      margin: 0 0 6px;
+      padding-left: 8px;
+      border-left: 4px solid #168ef0;
+      color: #111d2f;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .share-subtitle {
+      margin: 0 0 20px;
+      color: #7b8798;
+      font-size: 13px;
+    }
+
+    .share-empty {
+      display: grid;
+      place-items: center;
+      height: 150px;
+      color: #9aa5b1;
+      font-size: 14px;
+    }
+
+    .share-empty::before {
+      display: block;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 10px;
+      background: linear-gradient(145deg, #eef2f7 0 55%, #dfe5ee 56% 100%);
+      clip-path: polygon(18% 22%, 62% 8%, 84% 40%, 60% 48%, 60% 82%, 28% 82%, 28% 48%, 0 42%);
+      content: "";
+      opacity: .8;
+    }
+
+    .share-group {
+      margin-top: 18px;
+    }
+
+    .share-group h4 {
+      margin: 0 0 10px;
+      color: #24364b;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .share-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .share-stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 5px;
+      background: #f5f7fa;
+      color: #24364b;
+      font-size: 14px;
+    }
+
+    .share-stat strong {
+      color: #168ef0;
+      font-size: 15px;
     }
 
     .general-section-title {
@@ -2430,7 +2503,7 @@
             <path d="M3 19.4h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </span>
-        鄂州市数字监管系统
+        鄂州市数字监管系统（原型图）
       </div>
 
       <nav class="topnav" aria-label="顶部导航">
@@ -2988,9 +3061,10 @@
               </h2>
 
               <div class="general-tabs">
-                <span class="general-tab active">事件详情</span>
-                <span class="general-tab">数据共享清单</span>
+                <span class="general-tab active" data-detail-tab="detail">事件详情</span>
+                <span class="general-tab" data-detail-tab="share">数据共享清单</span>
               </div>
+              <div class="detail-main-content">
               <h3 class="general-section-title">基础信息</h3>
               <div class="general-info-grid">
                 <div class="general-info">
@@ -3031,6 +3105,8 @@
                 <div>【警情调令】11时04分，葛店经济开发区高新五路与创业大道交汇处燃油轿车起火，调派高新大道专职消防站出警处置，报警电话：17723033358。</div>
               </div>
               <h3 class="general-section-title" style="margin-top: 16px;">附件资料</h3>
+              </div>
+              <div class="share-content hidden"></div>
             </div>
           </section>
 
@@ -3698,6 +3774,10 @@
               AI-溺水事件详情
               <button class="ghost-btn back-todo-btn" type="button">返回列表</button>
             </div>
+            <div class="general-tabs">
+              <span class="general-tab active" data-detail-tab="detail">事件详情</span>
+              <span class="general-tab" data-detail-tab="share">数据共享清单</span>
+            </div>
             <div class="drowning-section">
               <h3 class="drowning-section-title">事件详情</h3>
               <div class="drowning-row">
@@ -3813,6 +3893,10 @@
             <div class="drowning-header">
               AI-生态详情
               <button class="ghost-btn back-todo-btn" type="button">返回列表</button>
+            </div>
+            <div class="general-tabs">
+              <span class="general-tab active" data-detail-tab="detail">事件详情</span>
+              <span class="general-tab" data-detail-tab="share">数据共享清单</span>
             </div>
             <div class="drowning-section">
               <h3 class="drowning-section-title">事件详情</h3>
@@ -4114,6 +4198,79 @@
         });
       });
     });
+
+    const shareHtml = `
+      <h3 class="share-title">当前发生地数据</h3>
+      <p class="share-subtitle">测试111</p>
+      <div class="share-empty">暂无发生地数据</div>
+      <div class="share-group">
+        <h3 class="share-title">周边 500m 数据</h3>
+        <p class="share-subtitle">点击数据项后地图定位并高亮</p>
+        <h4>周围人(500m)</h4>
+        <div class="share-grid">
+          <div class="share-stat"><span>实有人口</span><strong>1070</strong></div>
+          <div class="share-stat"><span>特殊人群</span><strong>17</strong></div>
+        </div>
+      </div>
+      <div class="share-group">
+        <h4>周围地(500m)</h4>
+        <div class="share-grid">
+          <div class="share-stat"><span>实有楼栋</span><strong>44</strong></div>
+          <div class="share-stat"><span>实有房屋</span><strong>616</strong></div>
+        </div>
+      </div>
+      <div class="share-group">
+        <h4>周围物(500m)</h4>
+        <div class="share-grid">
+          <div class="share-stat"><span>消防栓</span><strong>2</strong></div>
+          <div class="share-stat"><span>视频监控</span><strong>2</strong></div>
+          <div class="share-stat"><span>燃气管道</span><strong>171</strong></div>
+        </div>
+      </div>
+      <div class="share-group">
+        <h4>周围组织(500m)</h4>
+        <div class="share-grid">
+          <div class="share-stat"><span>社会团体</span><strong>5</strong></div>
+          <div class="share-stat"><span>企业单位</span><strong>49</strong></div>
+          <div class="share-stat"><span>个体工商户</span><strong>46</strong></div>
+        </div>
+      </div>
+    `;
+
+    function setupDetailTabs() {
+      document.querySelectorAll(".general-tabs").forEach((tabs) => {
+        const tabItems = tabs.querySelectorAll(".general-tab");
+        if (tabItems.length < 2 || tabs.dataset.bound === "true") return;
+        tabs.dataset.bound = "true";
+
+        let share = tabs.parentElement.querySelector(":scope > .share-content");
+        if (!share) {
+          share = document.createElement("div");
+          share.className = "share-content hidden";
+          tabs.insertAdjacentElement("afterend", share);
+        }
+        share.innerHTML = shareHtml;
+
+        const contentSiblings = Array.from(tabs.parentElement.children)
+          .filter((child) => child !== tabs && child !== share);
+
+        tabItems[0].dataset.detailTab = "detail";
+        tabItems[1].dataset.detailTab = "share";
+
+        tabItems.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const showShare = tab.dataset.detailTab === "share";
+            tabItems.forEach((item) => item.classList.toggle("active", item === tab));
+            share.classList.toggle("hidden", !showShare);
+            contentSiblings.forEach((child) => {
+              child.classList.toggle("hidden", showShare);
+            });
+          });
+        });
+      });
+    }
+
+    setupDetailTabs();
 
     myTodoMenu.addEventListener("click", () => {
       showTodoList();
