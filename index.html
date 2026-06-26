@@ -660,6 +660,37 @@
       z-index: 5;
     }
 
+    .multi-search {
+      width: calc(100% - 16px);
+      height: 30px;
+      margin: 2px 8px 6px;
+      padding: 0 9px;
+      border: 1px solid #cfd7e3;
+      border-radius: 4px;
+      color: #2d3a4c;
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+    }
+
+    .multi-search:focus {
+      border-color: #168ef0;
+      box-shadow: 0 0 0 2px rgba(22, 142, 240, 0.1);
+    }
+
+    .multi-empty {
+      display: none;
+      padding: 8px 12px;
+      color: #9aa5b1;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .multi-select.no-result .multi-empty {
+      display: block;
+    }
+
     .multi-select.open .multi-select-menu {
       display: block;
     }
@@ -684,6 +715,128 @@
       height: 14px;
       margin: 0;
       accent-color: #168ef0;
+    }
+
+    .assist-note-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .assist-note-item {
+      padding: 10px;
+      border: 1px solid #d9e8fb;
+      border-radius: 6px;
+      background: #f7fbff;
+    }
+
+    .assist-note-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      color: #1f2d3d;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .assist-note-title::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #168ef0;
+      content: "";
+    }
+
+    .assist-note-textarea {
+      width: 100%;
+      min-height: 64px;
+      padding: 8px 10px;
+      border: 1px solid #cfd7e3;
+      border-radius: 4px;
+      color: #2d3a4c;
+      font: inherit;
+      font-size: 14px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      background: #fff;
+    }
+
+    .assist-note-textarea:focus {
+      border-color: #168ef0;
+      box-shadow: 0 0 0 2px rgba(22, 142, 240, 0.12);
+    }
+
+    .dispatch-panel {
+      border: 1px solid #dce8f6;
+      border-radius: 6px;
+      background: #f8fbff;
+      overflow: hidden;
+    }
+
+    .dispatch-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      border-bottom: 1px solid #e5eef8;
+      color: #1f2d3d;
+      font-size: 13px;
+      font-weight: 600;
+      background: #eef7ff;
+    }
+
+    .dispatch-head span {
+      color: #6b7785;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .dispatch-list {
+      display: grid;
+      gap: 8px;
+      max-height: 190px;
+      padding: 10px;
+      overflow: auto;
+    }
+
+    .dispatch-option {
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      gap: 9px;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 10px;
+      border: 1px solid #e1e8f0;
+      border-radius: 5px;
+      color: #26384d;
+      font-size: 13px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .dispatch-option:hover {
+      border-color: #9fcbfb;
+      background: #f2f8ff;
+    }
+
+    .dispatch-option:has(input:checked) {
+      border-color: #168ef0;
+      background: #eef7ff;
+    }
+
+    .dispatch-option input {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      accent-color: #168ef0;
+    }
+
+    .dispatch-distance {
+      color: #168ef0;
+      font-weight: 600;
+      white-space: nowrap;
     }
 
     .map-panel {
@@ -2876,6 +3029,43 @@
               </div>
 
               <div class="fire-field">
+                <label>站级调派</label>
+                <div class="dispatch-panel">
+                  <div class="dispatch-head">
+                    消防栓距离排序
+                    <span>由近到远，可多选</span>
+                  </div>
+                  <div class="dispatch-list" aria-label="消防栓调派列表">
+                    <label class="dispatch-option">
+                      <input type="checkbox" value="高新五路1号消防栓" />
+                      <span>高新五路1号消防栓</span>
+                      <strong class="dispatch-distance">120m</strong>
+                    </label>
+                    <label class="dispatch-option">
+                      <input type="checkbox" value="葛店新社区南门消防栓" />
+                      <span>葛店新社区南门消防栓</span>
+                      <strong class="dispatch-distance">260m</strong>
+                    </label>
+                    <label class="dispatch-option">
+                      <input type="checkbox" value="创业大道路口消防栓" />
+                      <span>创业大道路口消防栓</span>
+                      <strong class="dispatch-distance">410m</strong>
+                    </label>
+                    <label class="dispatch-option">
+                      <input type="checkbox" value="电商大道2号消防栓" />
+                      <span>电商大道2号消防栓</span>
+                      <strong class="dispatch-distance">530m</strong>
+                    </label>
+                    <label class="dispatch-option">
+                      <input type="checkbox" value="葛洪大道联通大楼消防栓" />
+                      <span>葛洪大道联通大楼消防栓</span>
+                      <strong class="dispatch-distance">720m</strong>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fire-field">
                 <label>协助部门（可多选）</label>
                 <div class="multi-select" id="assistDept">
                   <button class="multi-select-trigger" type="button">
@@ -2904,6 +3094,7 @@
                     </label>
                   </div>
                 </div>
+                <div class="assist-note-list" id="assistDeptNotes" aria-label="协助部门说明"></div>
               </div>
 
               <div class="form-actions">
@@ -4063,17 +4254,55 @@
 
     function setupMultiSelect(selectEl) {
       const trigger = selectEl.querySelector(".multi-select-trigger");
-      const inputs = selectEl.querySelectorAll("input");
+      const menu = selectEl.querySelector(".multi-select-menu");
+      const isAssistSelect = ["assistDept", "assistDeptGeneral"].includes(selectEl.id);
+      let searchInput = null;
+      let emptyText = null;
+
+      if (isAssistSelect && menu && !menu.querySelector(".multi-search")) {
+        searchInput = document.createElement("input");
+        emptyText = document.createElement("div");
+        searchInput.className = "multi-search";
+        searchInput.type = "text";
+        searchInput.placeholder = "输入部门名称搜索";
+        emptyText.className = "multi-empty";
+        emptyText.textContent = "暂无匹配部门";
+        menu.prepend(searchInput);
+        menu.appendChild(emptyText);
+      } else if (isAssistSelect && menu) {
+        searchInput = menu.querySelector(".multi-search");
+        emptyText = menu.querySelector(".multi-empty");
+      }
+
+      const options = selectEl.querySelectorAll(".multi-option");
+      const inputs = Array.from(options).map((option) => option.querySelector("input")).filter(Boolean);
       const placeholder = trigger.textContent.trim();
 
       function updateLabel() {
-        const selected = Array.from(inputs)
+        const selected = inputs
           .filter((input) => input.checked)
           .map((input) => input.value);
 
         trigger.innerHTML = selected.length
           ? selected.join("、")
           : `<span class="multi-placeholder">${placeholder}</span>`;
+      }
+
+      function filterOptions() {
+        if (!searchInput) {
+          return;
+        }
+
+        const keyword = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+        options.forEach((option) => {
+          const matched = option.textContent.trim().toLowerCase().includes(keyword);
+          option.style.display = matched ? "" : "none";
+          if (matched) {
+            visibleCount += 1;
+          }
+        });
+        selectEl.classList.toggle("no-result", visibleCount === 0);
       }
 
       trigger.addEventListener("click", (event) => {
@@ -4084,11 +4313,24 @@
           }
         });
         selectEl.classList.toggle("open");
+        if (selectEl.classList.contains("open") && searchInput) {
+          searchInput.focus();
+          filterOptions();
+        }
       });
 
       selectEl.addEventListener("click", (event) => {
         event.stopPropagation();
       });
+
+      if (searchInput) {
+        searchInput.addEventListener("input", filterOptions);
+        searchInput.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            selectEl.classList.remove("open");
+          }
+        });
+      }
 
       inputs.forEach((input) => {
         input.addEventListener("change", () => {
@@ -4101,6 +4343,48 @@
     }
 
     document.querySelectorAll(".multi-select").forEach(setupMultiSelect);
+
+    const fireAssistDept = document.getElementById("assistDept");
+    const fireAssistNotes = document.getElementById("assistDeptNotes");
+    const fireAssistNoteValues = {};
+
+    function renderFireAssistNotes() {
+      if (!fireAssistDept || !fireAssistNotes) {
+        return;
+      }
+
+      const selected = Array.from(fireAssistDept.querySelectorAll("input:checked")).map((input) => input.value);
+      fireAssistNotes.innerHTML = "";
+      selected.forEach((dept) => {
+        const item = document.createElement("div");
+        const title = document.createElement("div");
+        const textarea = document.createElement("textarea");
+
+        item.className = "assist-note-item";
+        title.className = "assist-note-title";
+        title.textContent = `${dept}协助说明`;
+        textarea.className = "assist-note-textarea";
+        textarea.dataset.assistDept = dept;
+        textarea.placeholder = `请输入${dept}的协助说明`;
+        textarea.value = fireAssistNoteValues[dept] || "";
+
+        item.append(title, textarea);
+        fireAssistNotes.appendChild(item);
+      });
+    }
+
+    if (fireAssistDept && fireAssistNotes) {
+      fireAssistDept.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("change", renderFireAssistNotes);
+      });
+
+      fireAssistNotes.addEventListener("input", (event) => {
+        const textarea = event.target.closest(".assist-note-textarea");
+        if (textarea) {
+          fireAssistNoteValues[textarea.dataset.assistDept] = textarea.value;
+        }
+      });
+    }
 
     document.addEventListener("click", () => {
       document.querySelectorAll(".multi-select.open").forEach((selectEl) => {
